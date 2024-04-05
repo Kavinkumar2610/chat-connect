@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
 import { MessageComponentModule } from '../message/message.module';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { AdMobFree } from '@ionic-native/admob-free/ngx';
 
 @NgModule({
   imports: [
@@ -15,6 +17,7 @@ import { MessageComponentModule } from '../message/message.module';
     MessageComponentModule,
     HomePageRoutingModule
   ],
-  declarations: [HomePage]
+  declarations: [HomePage],
+  providers: [Geolocation,AdMobFree]
 })
 export class HomePageModule {}

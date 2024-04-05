@@ -1,0 +1,105 @@
+/* src/app/home/home.page.scss */
+
+  .logo-container {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+  .logo {
+    height: 90px; /* Adjust the height as needed */
+    width: auto; /* Maintain aspect ratio */
+  }
+  
+  .greeting {
+    text-align: center;
+    font-size: 24px;
+    margin-top: 20px;
+    color: #000000;
+    font-family:'Times New Roman', Times, serif
+  }
+  
+  .app-list {
+    margin-top: 20px;
+  }
+  
+  /* Set background color for ion-list */
+  ion-list {
+    background-color: #ffffff; /* Set background color to white */
+  }
+
+  ion-toolbar.footer-toolbar-container {
+    background-color: #ffffff; /* Set background color to white */
+  }
+  
+  .app-item {
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background-color: #ffffff; /* Set background color to white */
+  }
+  
+  .app-label {
+    font-weight: bold;
+    font-size: 18px;
+    color: #333; /* Set the text color */
+  }
+  
+  /* Remove the box-shadow effect on hover */
+  .app-item:hover {
+    box-shadow: none;
+  }
+  
+  .instruction {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+    margin-top: 20px;
+  }
+  
+  ion-content {
+    --ion-background-color: #ffffff;
+  }
+  
+  ion-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background-color: #f4f4f4;
+    padding: 10px 0;
+    box-shadow: 0 -2px 4px rgba(255, 255, 255, 0.1);
+  }
+  
+  .version-label {
+    text-align: center;
+    color: #999; /* Set color of the version label */
+    margin-top: auto; /* Align to the bottom of the footer */
+  }
+
+  /* Add margin to the bottom of the list items */
+.app-item {
+  margin-bottom: 10px;
+}
+
+/* Add border between items */
+.divider {
+  border-top: 1px solid #ccc;
+  margin: 5px 0;
+}
+
+/* Align version label to the bottom */
+.version-label {
+  text-align: center;
+  color: #999;
+  margin-top: auto;
+}
+
+/* Disable click animation for disabled buttons */
+.app-item.disabled {
+  pointer-events: none; /* Disable pointer events */
+}
+
+/* Adjust styling to visually indicate disabled state */
+.app-item.disabled {
+  opacity: 0.5; /* Reduce opacity to visually indicate disabled state */
+  cursor: default; /* Set cursor to default to indicate non-clickable */
+}

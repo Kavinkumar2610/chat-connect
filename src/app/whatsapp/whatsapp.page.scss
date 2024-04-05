@@ -1,0 +1,112 @@
+/* Header styles */
+.back-button {
+  --color: #128c7e; /* Set back button color */
+}
+
+.header-title {
+  color: #128c7e; /* Set header title color */
+  font-size: 24px; /* Set header title font size */
+  font-weight: bold; /* Make header title bold */
+}
+
+
+/* Content styles */
+.content {
+  --ion-background-color: #f9f9f9; /* Set background color */
+  padding: 20px; /* Add padding to content */
+}
+
+.form-container {
+  padding: 20px;
+  background-color: #ffffff; /* Set form container background color */
+  border-radius: 15px; /* Add rounded corners to form container */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow to form container */
+  width: 100%; /* Set width to 100% of screen */
+  max-width: none; /* Remove max width */
+  margin: 0 auto; /* Center container horizontally */
+  // height: 100%;
+}
+
+
+.form-item {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  color: #000000; /* Set form label color */
+  font-size: 20px; /* Set font size for field names */
+  margin-bottom: 5px; /* Add margin below field names */
+}
+
+ion-card-header {
+  color: #000000; /* Set form label color */
+  font-size: 16px; /* Set font size for field names */
+  margin-bottom: 5px; /* Add margin below field names */
+}
+
+form-label-cm {
+  color: #504f4f; /* Set form label color */
+  font-size: 16px; /* Set font size for field names */
+}
+
+.country-select {
+  min-width: 150px; /* Set minimum width for country select */
+}
+
+.phone-input {
+  border: 1px solid #ccc; /* Add border to input fields */
+  border-radius: 8px; /* Round the corners of input fields */
+  padding: 10px; /* Add padding to input fields */
+  padding-left: 20px; /* Add left padding for phone number input */
+}
+
+.message-textarea {
+  min-height: 150px; /* Set minimum height for textarea */
+  resize: vertical; /* Allow vertical resizing */
+  border: 1px solid #ccc; /* Add border to input fields */
+  border-radius: 8px; /* Round the corners of input fields */
+  padding: 10px; /* Add padding to input fields */
+  padding-left: 20px; /* Add left padding for phone number input */
+}
+
+.start-button {
+  margin-top: 20px; /* Add some space between input fields and button */
+  --background: #128c7e; /* Set button background color */
+  --border-radius: 8px; /* Round the button corners */
+  --box-shadow: none; /* Remove button shadow */
+  font-weight: bold; /* Make button text bold */
+}
+
+/* Message history container */
+.message-history-container {
+  background-color: #ffffff; /* Set background color for message history */
+  border-radius: 15px; /* Add rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow */
+  padding: 20px; /* Add padding */
+  margin-top: 20px; /* Add margin from form container */
+}
+
+/* Message history list */
+.message-history-list {
+  margin-top: 10px; /* Add margin between list items */
+}
+
+/* Button to clear history */
+.clear-history-button {
+  margin-top: 20px; /* Add margin from message history */
+  --background: #ff4d4f; /* Set button background color */
+  --border-radius: 8px; /* Round the button corners */
+  --box-shadow: none; /* Remove button shadow */
+  font-weight: bold; /* Make button text bold */
+}
+
+.version-label {
+  text-align: center;
+  color: #999; /* Set color of the version label */
+  margin-top: 20px; /* Adjust the margin as needed */
+}
+
+ion-avatar{
+    width: 35px; /* Set the width of the logo */
+    height: 35px; /* Set the height of the logo */
+}

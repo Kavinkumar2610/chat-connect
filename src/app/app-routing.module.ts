@@ -14,7 +14,19 @@ const routes: Routes = [
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
+  },  {
+    path: 'whatsapp',
+    loadChildren: () => import('./whatsapp/whatsapp.module').then( m => m.WhatsappPageModule)
   },
+  {
+    path: 'telegram',
+    loadChildren: () => import('./telegram/telegram.module').then( m => m.TelegramPageModule)
+  },
+  {
+    path: 'wechat',
+    loadChildren: () => import('./wechat/wechat.module').then( m => m.WechatPageModule)
+  },
+
 ];
 
 @NgModule({

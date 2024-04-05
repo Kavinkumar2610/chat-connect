@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" class="back-button"></ion-back-button>
+    </ion-buttons>
+    <ion-avatar slot="start">
+      <img src="assets/whatsapp.png">
+    </ion-avatar>
+    <ion-title class="header-title">
+      WhatsApp
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="content">
+  <div class="form-container">
+    <form #whatsappForm="ngForm" (ngSubmit)="startChat()">
+      <ion-item class="form-item">
+        <ion-label position="stacked" class="form-label">Country Code</ion-label>
+        <ion-select [(ngModel)]="selectedCountryCode" interface="popover" class="country-select" name="selectedCountryCode" required>
+          <ion-select-option *ngFor="let countryCode of countryCodes" [value]="countryCode">
+            {{ countryCode.name }} (+{{ countryCode.code }})
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item class="form-item">
+        <ion-label position="stacked" class="form-label">Phone Number</ion-label>
+        <ion-input type="tel" placeholder="Enter phone number" [(ngModel)]="phoneNumber" class="phone-input" name="phoneNumber" pattern="[0-9]*" required (keypress)="validatePhoneNumber($event)"></ion-input>
+      </ion-item>           
+
+      <ion-item class="form-item">
+        <ion-label position="stacked" class="form-label">Custom Message</ion-label>
+        <ion-label position="stacked" class="form-label-cm">(Max 200 characters)</ion-label>
+        <ion-textarea placeholder="Enter custom message" [(ngModel)]="customMessage" class="message-textarea" name="customMessage" maxlength="200"></ion-textarea>
+      </ion-item>
+
+      <ion-button expand="full" color="primary" type="submit" [disabled]="!phoneNumber" class="start-button">Start Chat</ion-button>
+    </form>
+  </div>
+  <div class="message-history-container">
+    <ion-card>
+      <ion-card-header>
+        Message History
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let historyItem of messageHistory">
+            <ion-label>{{ historyItem.phoneNumber }}</ion-label>
+            <ion-button *ngIf="historyItem.customMessage" slot="end" (click)="showMessage(historyItem.customMessage)">
+              <ion-icon name="chatbox"></ion-icon>
+            </ion-button>
+            <ion-button slot="end" (click)="reMessage(historyItem.phoneNumber)">
+              <ion-icon name="repeat"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+      <ion-button expand="block" color="danger" (click)="clearHistory()">Clear</ion-button>
+    </ion-card>
+  </div>  
+</ion-content>

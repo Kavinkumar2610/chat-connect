@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Telegram</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="stacked">Username</ion-label>
+    <ion-input type="text" [(ngModel)]="username"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Phone Number</ion-label>
+    <ion-input type="tel" [(ngModel)]="phoneNumber"></ion-input>
+  </ion-item>
+
+  <ion-button expand="block" (click)="startChat()">Start Chat</ion-button>
+</ion-content>

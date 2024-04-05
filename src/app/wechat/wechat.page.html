@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>WeChat</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="stacked">WeChat ID</ion-label>
+    <ion-input type="text" [(ngModel)]="wechatId"></ion-input>
+  </ion-item>
+
+  <ion-button expand="block" (click)="startChat()">Start Chat</ion-button>
+</ion-content>
