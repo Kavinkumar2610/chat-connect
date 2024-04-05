@@ -1,0 +1,8 @@
+{
+  "name": "ChatConnect",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "5942d53a"
+}
