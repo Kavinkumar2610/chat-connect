@@ -47,6 +47,9 @@ export class HomePage {
       case 'wechat':
         this.router.navigateByUrl('/wechat');
         break;
+      case 'call-dialer':
+        this.router.navigateByUrl('/call-dialer');
+        break;
       default:
         console.error('Unsupported chat platform');
     }

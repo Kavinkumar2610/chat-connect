@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" class="back-button"></ion-back-button>
+    </ion-buttons>
+    <ion-avatar slot="start">
+      <img src="assets/dialer.png">
+    </ion-avatar>
+    <ion-title class="header-title">
+      Call Dialer
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- File upload section -->
+  <div class="container">
+    <h4>Upload your CSV or XLSX file here to start calling</h4>
+    <ion-row class="ion-align-items-center ion-justify-content-center">
+      <!-- File input -->
+      <ion-col size="auto">
+        <input type="file" (change)="onFileChange($event)" accept=".csv, .xlsx" class="ion-margin-bottom" />
+      </ion-col>
+      <!-- Uploaded file name -->
+      <ion-col size="auto">
+        <p *ngIf="uploadedFileName">Uploaded File: {{ uploadedFileName }}</p>
+      </ion-col>
+    </ion-row>
+
+    <!-- Icons with gap -->
+    <ion-row class="ion-align-items-center ion-justify-content-center">
+      <!-- File CSV icon -->
+      <ion-col size="auto">
+        <i class="fa-solid fa-file-csv icon" (click)="downloadTemplate()"></i>
+      </ion-col>
+
+      <!-- Add some gap between the icons -->
+      <ion-col size="auto" class="icon-gap"></ion-col>
+
+      <!-- Bin icon -->
+      <ion-col size="auto">
+        <i class="fa-solid fa-trash icon" (click)="clearPhoneNumbers()"></i>
+      </ion-col>
+    </ion-row>
+  </div>
+  
+  <!-- Start call button -->
+  <ion-button (click)="startCall()" expand="full" class="start-call" color="info" [disabled]="!uploadedFileName">
+    Start Call
+  </ion-button>
+  
+  <!-- End call button -->
+  <ion-button (click)="stopCall()" expand="full" color="danger" class="ion-margin-top" [disabled]="!uploadedFileName">
+    End Call
+  </ion-button>
+  
+  <!-- Phone numbers list container -->
+  <div class="container">
+    <ion-list>
+      <ion-item *ngFor="let number of phoneNumbers" (click)="callNumber(number)">
+        <ion-label>{{ number }}</ion-label>
+        <ion-icon name="call" slot="end" (click)="callNumber(number)"></ion-icon>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <!-- Call history container (conditionally rendered) -->
+  <div class="container" *ngIf="callHistory.length > 0">
+    <h3>Call History</h3>
+    <ion-list>
+      <ion-item *ngFor="let number of callHistory" (click)="callNumber(number)">
+        <ion-label>{{ number }}</ion-label>
+        <ion-icon name="repeat" slot="end" (click)="callNumber(number)"></ion-icon>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

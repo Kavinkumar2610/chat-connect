@@ -30,19 +30,27 @@
       <ion-label class="app-label">WeChat</ion-label>
     </ion-item>
     <ion-item-divider class="divider"></ion-item-divider>
+    <ion-item button (click)="openApp('call-dialer')" class="app-item" color="light">
+      <ion-avatar slot="start">
+        <!-- You can replace the src attribute with the icon for the Call Dialer app -->
+        <img src="assets/dialer.png">
+      </ion-avatar>
+      <ion-label class="app-label">Call Dialer</ion-label>
+    </ion-item>
+<ion-item-divider class="divider"></ion-item-divider>
   </ion-list>
 
   <!-- Version label -->
   <div class="version-label">
-    App Version: 1.0.0 <!-- Replace with your app version -->
+    App Version: 2.0.0 <!-- Replace with your app version -->
   </div>
 </ion-content>
 
-<ion-footer>
+<!-- <ion-footer>
   <ion-toolbar color="primary" class="footer-toolbar">
-    <!-- Google Ads banner -->
+    Google Ads banner
     <div id="admob-banner">
-      <!-- Ad will be displayed here -->
+      Ad will be displayed here
     </div>
   </ion-toolbar>
-</ion-footer>
+</ion-footer> -->

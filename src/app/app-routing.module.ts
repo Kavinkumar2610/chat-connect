@@ -26,6 +26,10 @@ const routes: Routes = [
     path: 'wechat',
     loadChildren: () => import('./wechat/wechat.module').then( m => m.WechatPageModule)
   },
+  {
+    path: 'call-dialer',
+    loadChildren: () => import('./call-dialer/call-dialer.module').then( m => m.CallDialerPageModule)
+  },
 
 ];
 
