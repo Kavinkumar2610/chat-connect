@@ -16,7 +16,7 @@ interface Channel {
   standalone: false
 })
 export class HomePage {
-  readonly version = '2.0.0';
+  readonly version = '3.0.0';
   readonly greeting = this.getGreeting();
 
   readonly channels: Channel[] = [
