@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular/lazy';
 import { WhatsappPageRoutingModule } from './whatsapp-routing.module';
 
 import { WhatsappPage } from './whatsapp.page';
-import { provideHttpClient, withXhr } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
 @NgModule({
@@ -18,7 +17,6 @@ import { IonicStorageModule } from '@ionic/storage-angular';
     WhatsappPageRoutingModule,
     IonicStorageModule.forRoot()
   ],
-  declarations: [WhatsappPage],
-  providers: [provideHttpClient(withXhr())]
+  declarations: [WhatsappPage]
 })
 export class WhatsappPageModule {}

@@ -1,47 +1,40 @@
-<ion-content class="ion-padding">
-  <div class="logo-container">
-    <img class="logo" src="assets/logo.png" alt="Logo">
-  </div>
-  <div class="greeting">
-    {{ greeting }}
-  </div>
-  <ion-list class="app-list">
-    <ion-item-divider class="divider"></ion-item-divider>
-    <ion-item button (click)="openApp('whatsapp')" class="app-item" color="light">
-      <ion-avatar slot="start">
-        <img src="assets/whatsapp.png">
-      </ion-avatar>
-      <ion-label class="app-label">WhatsApp</ion-label>
-    </ion-item>
-    <ion-item-divider class="divider"></ion-item-divider>
-    <ion-item button class="app-item disabled" color="light">
-      <ion-avatar slot="start">
-        <!-- <img src="assets/telegram.png"> -->
-        <img src="assets/telegrambw.png">
-      </ion-avatar>
-      <ion-label class="app-label">Telegram</ion-label>
-    </ion-item>
-    <ion-item-divider class="divider"></ion-item-divider>
-    <ion-item button class="app-item disabled" color="light">
-      <ion-avatar slot="start">
-        <!-- <img src="assets/wechat.png"> -->
-        <img src="assets/wechatbw.png">
-      </ion-avatar>
-      <ion-label class="app-label">WeChat</ion-label>
-    </ion-item>
-    <ion-item-divider class="divider"></ion-item-divider>
-    <ion-item button (click)="openApp('call-dialer')" class="app-item" color="light">
-      <ion-avatar slot="start">
-        <!-- You can replace the src attribute with the icon for the Call Dialer app -->
-        <img src="assets/dialer.png">
-      </ion-avatar>
-      <ion-label class="app-label">Call Dialer</ion-label>
-    </ion-item>
-<ion-item-divider class="divider"></ion-item-divider>
-  </ion-list>
+<ion-content>
+  <main class="page home">
+    <header class="hero">
+      <div class="top-bar">
+        <img class="logo" src="assets/logo.png" alt="ChatConnect" width="144" height="50">
+        <div class="theme-toggle">
+          <ion-icon [name]="theme.dark ? 'moon' : 'moon-outline'" aria-hidden="true"></ion-icon>
+          <ion-toggle aria-label="Dark mode" [checked]="theme.dark" (ionChange)="theme.setDark($event.detail.checked)"></ion-toggle>
+        </div>
+      </div>
+      <h1>{{ greeting }}</h1>
+      <p class="page-intro">Start a conversation without saving the contact first.</p>
+    </header>
 
-  <!-- Version label -->
-  <div class="version-label">
-    App Version: 2.0.0 <!-- Replace with your app version -->
-  </div>
+    <ion-list [inset]="true" lines="inset">
+      @for (channel of channels; track channel.name) {
+        @if (channel.route) {
+          <ion-item button [routerLink]="channel.route" detail>
+            <img slot="start" class="channel-icon" [src]="channel.icon" alt="" width="44" height="44">
+            <ion-label>
+              <h2>{{ channel.name }}</h2>
+              <p>{{ channel.description }}</p>
+            </ion-label>
+          </ion-item>
+        } @else {
+          <ion-item class="soon">
+            <img slot="start" class="channel-icon" [src]="channel.icon" alt="" width="44" height="44">
+            <ion-label>
+              <h2>{{ channel.name }}</h2>
+              <p>{{ channel.description }}</p>
+            </ion-label>
+            <ion-badge slot="end" color="light">Coming soon</ion-badge>
+          </ion-item>
+        }
+      }
+    </ion-list>
+
+    <p class="version">Version {{ version }}</p>
+  </main>
 </ion-content>

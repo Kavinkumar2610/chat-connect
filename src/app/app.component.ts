@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { ThemeService } from './theme.service';
 
 @Component({
   selector: 'app-root',
@@ -8,5 +9,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   standalone: false
 })
 export class AppComponent {
-  constructor() {}
+  constructor(theme: ThemeService) {
+    theme.init();
+  }
 }

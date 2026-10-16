@@ -1,17 +1,18 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
     <ion-title>Telegram</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-item>
-    <ion-input label="Username" labelPlacement="stacked" type="text" [(ngModel)]="username"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-input label="Phone Number" labelPlacement="stacked" type="tel" [(ngModel)]="phoneNumber"></ion-input>
-  </ion-item>
-
-  <ion-button expand="block" (click)="startChat()">Start Chat</ion-button>
+  <main class="page">
+    <div class="card">
+      <ion-input label="Username" labelPlacement="stacked" fill="outline" type="text" autocomplete="username" [(ngModel)]="username"></ion-input>
+      <ion-input label="Phone number" labelPlacement="stacked" fill="outline" type="tel" autocomplete="tel" [(ngModel)]="phoneNumber" helperText="Used when no username is given"></ion-input>
+      <ion-button expand="block" size="large" [disabled]="!username && !phoneNumber" (click)="startChat()">Open Telegram</ion-button>
+    </div>
+  </main>
 </ion-content>

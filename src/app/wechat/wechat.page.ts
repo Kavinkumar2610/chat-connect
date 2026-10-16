@@ -1,5 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-wechat',
@@ -8,13 +7,8 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
-export class WechatPage implements OnInit {
+export class WechatPage {
   wechatId: string = '';
-
-  constructor(private router: Router) { }
-
-  ngOnInit() {
-  }
 
   startChat() {
     let weChatLink = `weixin://dl/chat?wechatid=${this.wechatId}`;

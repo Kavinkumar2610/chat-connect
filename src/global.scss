@@ -24,3 +24,113 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+/* Dark mode: applied via the .ion-palette-dark class on <html> (see ThemeService) */
+@import "@ionic/angular/css/palettes/dark.class.css";
+
+/* Layout ------------------------------------------------------------------ */
+
+ion-content,
+ion-toolbar {
+  --background: var(--app-bg);
+}
+
+ion-title {
+  font-weight: 600;
+}
+
+/* Single readable column, centered on tablets and desktop */
+.page {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 8px 16px calc(32px + var(--ion-safe-area-bottom, 0px));
+}
+
+.page-intro {
+  margin: 4px 4px 20px;
+  color: var(--ion-color-medium);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  margin: 24px 4px 4px;
+
+  h2 {
+    margin: 0;
+    color: var(--ion-color-medium);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+}
+
+/* WhatsApp brand green, tuned for 4.5:1 text contrast in each theme.
+   A global class (not :host) so the country modal, rendered outside the page, gets it too. */
+.theme-whatsapp {
+  --ion-color-primary: #0e7c6b;
+  --ion-color-primary-rgb: 14, 124, 107;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #0c6d5e;
+  --ion-color-primary-tint: #26897a;
+}
+
+.ion-palette-dark .theme-whatsapp {
+  --ion-color-primary: #25d366;
+  --ion-color-primary-rgb: 37, 211, 102;
+  --ion-color-primary-contrast: #000000;
+  --ion-color-primary-contrast-rgb: 0, 0, 0;
+  --ion-color-primary-shade: #21ba5a;
+  --ion-color-primary-tint: #3bd775;
+}
+
+/* Read by screen readers, not shown */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Surfaces ---------------------------------------------------------------- */
+
+.card {
+  display: grid;
+  gap: 16px;
+  padding: 20px 16px;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+  background: var(--ion-item-background, var(--ion-background-color, #fff));
+}
+
+/* .page prefix outranks Ionic's own .list-md.list-inset margin/radius */
+.page ion-list.list-inset {
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+}
+
+/* Controls ---------------------------------------------------------------- */
+
+ion-button {
+  --border-radius: 12px;
+  --box-shadow: none;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 600;
+}
+
+/* 48dp minimum touch target (Android) for in-page buttons */
+.page ion-button:not(.button-large) {
+  min-height: 48px;
+  min-width: 48px;
+}

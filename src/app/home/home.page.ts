@@ -1,6 +1,12 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { Router } from '@angular/router'; // Import the Router module
+import { ThemeService } from '../theme.service';
 
+interface Channel {
+  name: string;
+  description: string;
+  icon: string;
+  route?: string; // unset = not available yet
+}
 
 @Component({
   selector: 'app-home',
@@ -10,40 +16,25 @@ import { Router } from '@angular/router'; // Import the Router module
   standalone: false
 })
 export class HomePage {
-  greeting: string = ''; // Add the greeting property
-  
+  readonly version = '2.0.0';
+  readonly greeting = this.getGreeting();
 
-  constructor(private router: Router) {
-    this.setGreeting();
-  }
+  readonly channels: Channel[] = [
+    { name: 'WhatsApp', description: 'Message any number without saving it', icon: 'assets/whatsapp.png', route: '/whatsapp' },
+    { name: 'Call Dialer', description: 'Call a list of numbers from a CSV file', icon: 'assets/dialer.png', route: '/call-dialer' },
+    { name: 'Telegram', description: 'Chat by username or number', icon: 'assets/telegram.png' },
+    { name: 'WeChat', description: 'Chat by WeChat ID', icon: 'assets/wechat.png' },
+  ];
 
-  setGreeting() {
+  constructor(public theme: ThemeService) {}
+
+  private getGreeting() {
     const hour = new Date().getHours();
     if (hour < 12) {
-      this.greeting = 'Good Morning';
+      return 'Good morning';
     } else if (hour < 18) {
-      this.greeting = 'Good Afternoon';
-    } else {
-      this.greeting = 'Good Evening';
+      return 'Good afternoon';
     }
-  }
-
-  openApp(platform: string) {
-    switch(platform) {
-      case 'whatsapp':
-        this.router.navigateByUrl('/whatsapp');
-        break;
-      case 'telegram':
-        this.router.navigateByUrl('/telegram');
-        break;
-      case 'wechat':
-        this.router.navigateByUrl('/wechat');
-        break;
-      case 'call-dialer':
-        this.router.navigateByUrl('/call-dialer');
-        break;
-      default:
-        console.error('Unsupported chat platform');
-    }
+    return 'Good evening';
   }
 }

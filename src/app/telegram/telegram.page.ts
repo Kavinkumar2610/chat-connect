@@ -1,5 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-telegram',
@@ -8,14 +7,9 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
-export class TelegramPage implements OnInit {
+export class TelegramPage {
   username: string = '';
   phoneNumber: string = '';
-
-  constructor(private router: Router) { }
-
-  ngOnInit() {
-  }
 
   startChat() {
     let telegramLink = `https://t.me/${this.username || this.phoneNumber}`;

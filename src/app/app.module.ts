@@ -9,7 +9,12 @@ import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [
+    BrowserModule,
+    // Skip page/overlay transitions when the OS asks for reduced motion
+    IonicModule.forRoot({ animated: !window.matchMedia('(prefers-reduced-motion: reduce)').matches }),
+    AppRoutingModule,
+  ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

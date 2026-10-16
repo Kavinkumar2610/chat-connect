@@ -1,85 +1,81 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home" class="back-button"></ion-back-button>
+      <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-avatar slot="start">
-      <img src="assets/dialer.png">
-    </ion-avatar>
-    <ion-title class="header-title">
-      Call Dialer
-    </ion-title>
+    <ion-title>Call Dialer</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <!-- File upload section -->
-  <div class="container">
-    <h4>Upload your CSV or XLSX file here to start calling</h4>
-    <ion-row class="ion-align-items-center ion-justify-content-center">
-      <!-- File input -->
-      <ion-col size="auto">
-        <input type="file" (change)="onFileChange($event)" accept=".csv, .xlsx" class="ion-margin-bottom" />
-      </ion-col>
-      <!-- Uploaded file name -->
-      <ion-col size="auto">
-        @if (uploadedFileName) {
-          <p>Uploaded File: {{ uploadedFileName }}</p>
-        }
-      </ion-col>
-    </ion-row>
+<ion-content>
+  <main class="page">
+    <p class="page-intro">Import a CSV file with a <strong>phone</strong> column, then dial each number in turn.</p>
 
-    <!-- Icons with gap -->
-    <ion-row class="ion-align-items-center ion-justify-content-center">
-      <!-- File CSV icon -->
-      <ion-col size="auto">
-        <i class="fa-solid fa-file-csv icon" (click)="downloadTemplate()"></i>
-      </ion-col>
+    <input #fileInput type="file" accept=".csv,text/csv" hidden (change)="onFileChange($event)" />
 
-      <!-- Add some gap between the icons -->
-      <ion-col size="auto" class="icon-gap"></ion-col>
-
-      <!-- Bin icon -->
-      <ion-col size="auto">
-        <i class="fa-solid fa-trash icon" (click)="clearPhoneNumbers()"></i>
-      </ion-col>
-    </ion-row>
-  </div>
-
-  <!-- Start call button -->
-  <ion-button (click)="startCall()" expand="full" class="start-call" color="info" [disabled]="!uploadedFileName">
-    Start Call
-  </ion-button>
-
-  <!-- End call button -->
-  <ion-button (click)="stopCall()" expand="full" color="danger" class="ion-margin-top" [disabled]="!uploadedFileName">
-    End Call
-  </ion-button>
-
-  <!-- Phone numbers list container -->
-  <div class="container">
-    <ion-list>
-      @for (number of phoneNumbers; track $index) {
-        <ion-item (click)="callNumber(number)">
-          <ion-label>{{ number }}</ion-label>
-          <ion-icon name="call" slot="end" (click)="callNumber(number)"></ion-icon>
+    @if (uploadedFileName) {
+      <ion-list [inset]="true">
+        <ion-item>
+          <ion-icon slot="start" name="document-text-outline" color="primary" aria-hidden="true"></ion-icon>
+          <ion-label>
+            <h3 class="file-name">{{ uploadedFileName }}</h3>
+            <p>{{ phoneNumbers.length }} {{ phoneNumbers.length === 1 ? 'number' : 'numbers' }}</p>
+          </ion-label>
+          <ion-button slot="end" fill="clear" color="danger" aria-label="Remove file and call history" (click)="confirmClear()">
+            <ion-icon slot="icon-only" name="trash-outline" aria-hidden="true"></ion-icon>
+          </ion-button>
         </ion-item>
-      }
-    </ion-list>
-  </div>
+      </ion-list>
 
-  <!-- Call history container (conditionally rendered) -->
-  @if (callHistory.length > 0) {
-    <div class="container">
-      <h3>Call History</h3>
-      <ion-list>
-        @for (number of callHistory; track $index) {
-          <ion-item (click)="callNumber(number)">
-            <ion-label>{{ number }}</ion-label>
-            <ion-icon name="repeat" slot="end" (click)="callNumber(number)"></ion-icon>
+      @if (calling) {
+        <ion-button class="primary-action" expand="block" size="large" color="danger" (click)="stopCall()">
+          <ion-icon slot="start" name="stop-circle-outline" aria-hidden="true"></ion-icon>
+          Stop calling
+        </ion-button>
+      } @else {
+        <ion-button class="primary-action" expand="block" size="large" [disabled]="!phoneNumbers.length" (click)="startCall()">
+          <ion-icon slot="start" name="call-outline" aria-hidden="true"></ion-icon>
+          Start calling
+        </ion-button>
+      }
+    } @else {
+      <button type="button" class="file-picker" (click)="fileInput.click()">
+        <ion-icon name="cloud-upload-outline" aria-hidden="true"></ion-icon>
+        <span class="file-picker-title">Choose a CSV file</span>
+        <span class="file-picker-hint">One phone number per row</span>
+      </button>
+      <ion-button expand="block" fill="clear" (click)="downloadTemplate()">
+        <ion-icon slot="start" name="download-outline" aria-hidden="true"></ion-icon>
+        Download CSV template
+      </ion-button>
+    }
+
+    @if (phoneNumbers.length) {
+      <div class="section-header">
+        <h2>Numbers</h2>
+      </div>
+      <ion-list [inset]="true" lines="inset">
+        @for (number of phoneNumbers; track $index) {
+          <ion-item button [detail]="false" (click)="callNumber(number)">
+            <ion-label class="number">{{ number }}</ion-label>
+            <ion-icon slot="end" name="call-outline" color="primary" aria-hidden="true"></ion-icon>
           </ion-item>
         }
       </ion-list>
-    </div>
-  }
+    }
+
+    @if (callHistory.length) {
+      <div class="section-header">
+        <h2>Called</h2>
+      </div>
+      <ion-list [inset]="true" lines="inset">
+        @for (number of callHistory; track $index) {
+          <ion-item button [detail]="false" (click)="callNumber(number)">
+            <ion-label class="number">{{ number }}</ion-label>
+            <ion-icon slot="end" name="refresh-outline" color="medium" aria-hidden="true"></ion-icon>
+          </ion-item>
+        }
+      </ion-list>
+    }
+  </main>
 </ion-content>

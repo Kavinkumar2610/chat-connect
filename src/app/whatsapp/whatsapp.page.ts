@@ -1,134 +1,106 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { Storage } from '@ionic/storage-angular'; // Import Storage service
-import { ActionSheetController } from '@ionic/angular/lazy';
+import { Component, OnInit, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Storage } from '@ionic/storage-angular';
+import { AlertController, IonContent, IonModal, IonSearchbar } from '@ionic/angular/lazy';
 import { Browser } from '@capacitor/browser';
+import { COUNTRY_CODES, CountryCode, matchesCountry, toWhatsAppNumber } from './country-codes';
 
-interface CountryCode {
-  name: string;
-  code: string;
+const MALAYSIA = COUNTRY_CODES.find(c => c.region === 'MY')!;
+
+interface HistoryItem {
+  to?: string; // full international number, digits only (missing on entries saved before v3.0)
+  phoneNumber: string;
+  customMessage: string;
 }
 
 @Component({
   selector: 'app-whatsapp',
   templateUrl: './whatsapp.page.html',
   styleUrls: ['./whatsapp.page.scss'],
+  host: { class: 'theme-whatsapp' },
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class WhatsappPage implements OnInit {
-  countryCodes: CountryCode[] = [];
-  selectedCountryCode: CountryCode = { name: '', code: '' };
-  phoneNumber: string = '';
-  customMessage: string = '';
-  messageHistory: { phoneNumber: string, customMessage: string }[] = [];
+  @ViewChild('chatForm') chatForm!: NgForm;
+  @ViewChild(IonContent) content!: IonContent;
+  @ViewChild(IonModal) countryModal!: IonModal;
+  @ViewChild(IonSearchbar) countrySearch?: IonSearchbar;
+
+  // Malaysia by default, as most users dial local numbers
+  selectedCountryCode: CountryCode = MALAYSIA;
+  countryQuery = '';
+  phoneNumber = '';
+  customMessage = '';
+  messageHistory: HistoryItem[] = [];
 
   constructor(
-    private router: Router,
-    private http: HttpClient,
-    private storage: Storage, // Inject Storage service
-    private actionSheetController: ActionSheetController
+    private storage: Storage,
+    private alertController: AlertController
   ) { }
 
   async ngOnInit() {
-    this.getCountryCodes();
     await this.storage.create();
-    this.loadMessageHistory();
-  }
-
-  getCountryCodes() {
-    const url = 'https://restcountries.com/v3.1/all';
-    this.http.get<any[]>(url).subscribe(
-      data => {
-        this.countryCodes = data.map(country => ({
-          name: country.name.common,
-          code: country.idd?.root + (country.idd?.suffixes && country.idd?.suffixes.length > 0 ? country.idd.suffixes[0] : '') || 'NA'
-        }));
-  
-        // Find the index of Malaysia in the countryCodes array
-        const malaysiaIndex = this.countryCodes.findIndex(country => country.name === 'Malaysia');
-        // If Malaysia is found, move it to the beginning of the array
-        if (malaysiaIndex !== -1) {
-          const malaysiaCountry = this.countryCodes.splice(malaysiaIndex, 1)[0];
-          this.countryCodes.unshift(malaysiaCountry);
-        }
-  
-        // Set the first country code as default
-        this.selectedCountryCode = this.countryCodes[0];
-      },
-      error => {
-        console.error('Error fetching country codes', error);
-        // Set a default country code in case of error
-        this.countryCodes = [{ name: 'Malaysia', code: '+60' }];
-        this.selectedCountryCode = this.countryCodes[0]; // Set the first country code as default
-      }
-    );
+    this.messageHistory = (await this.storage.get('messageHistory')) ?? [];
   }
 
   async startChat() {
-    if (!this.phoneNumber) {
-      console.error('Phone number is required');
-      return;
-    }
+    const to = toWhatsAppNumber(this.phoneNumber, this.selectedCountryCode.code);
 
-    let whatsappLink = `https://wa.me/${this.selectedCountryCode.code}${this.phoneNumber}`;
+    let url = `https://wa.me/${to}`;
     if (this.customMessage) {
-      whatsappLink += `?text=${encodeURIComponent(this.customMessage)}`;
+      url += `?text=${encodeURIComponent(this.customMessage)}`;
     }
-    console.log('Opening WhatsApp link:', whatsappLink);
-
     // Browser.open falls back to window.open on web
-    await Browser.open({ url: whatsappLink });
+    await Browser.open({ url });
 
-    // Save message to history
-    this.messageHistory.unshift({ phoneNumber: this.phoneNumber, customMessage: this.customMessage });
-    // Save to storage
+    this.messageHistory = [
+      { to, phoneNumber: this.phoneNumber, customMessage: this.customMessage },
+      ...this.messageHistory.filter(item => item.to !== to),
+    ].slice(0, 20);
     await this.storage.set('messageHistory', this.messageHistory);
-    // Reset input fields
-    this.phoneNumber = '';
-    this.customMessage = '';
+
+    this.chatForm.resetForm({ phoneNumber: '', customMessage: '' });
   }
 
-  validatePhoneNumber(event: KeyboardEvent) {
-    const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
-    if (!allowedKeys.includes(event.key) && isNaN(Number(event.key))) {
-      event.preventDefault();
+  // ponytail: filters all 245 rows on each change detection; trivial at this size, memoize if the list grows
+  get countrySections(): { title: string; items: CountryCode[] }[] {
+    if (this.countryQuery.trim()) {
+      const items = COUNTRY_CODES.filter(c => matchesCountry(c, this.countryQuery));
+      return items.length ? [{ title: items.length === 1 ? '1 result' : `${items.length} results`, items }] : [];
     }
+    const suggested = this.selectedCountryCode === MALAYSIA ? [MALAYSIA] : [this.selectedCountryCode, MALAYSIA];
+    return [
+      { title: 'Suggested', items: suggested },
+      { title: 'All countries', items: COUNTRY_CODES },
+    ];
   }
 
-  async showMessage(customMessage: string) {
-    const actionSheet = await this.actionSheetController.create({
-      header: customMessage,
+  selectCountry(country: CountryCode) {
+    this.selectedCountryCode = country;
+    this.countryModal.dismiss();
+  }
+
+  reuse(item: HistoryItem) {
+    this.phoneNumber = item.to ? '+' + item.to : item.phoneNumber;
+    this.customMessage = item.customMessage;
+    this.content.scrollToTop(300);
+  }
+
+  async confirmClear() {
+    const alert = await this.alertController.create({
+      header: 'Clear recent chats?',
+      message: 'This removes all numbers from your recent list.',
       buttons: [
-        {
-          text: 'Ok',
-          handler: () => {
-          }
-        }
-      ]
+        { text: 'Cancel', role: 'cancel' },
+        { text: 'Clear', role: 'destructive', handler: () => this.clearHistory() },
+      ],
     });
-  
-    await actionSheet.present();
+    await alert.present();
   }
 
   async clearHistory() {
-    // Clear message history
     this.messageHistory = [];
-    // Clear storage
     await this.storage.remove('messageHistory');
   }
-
-  async loadMessageHistory() {
-    const storedHistory = await this.storage.get('messageHistory');
-    if (storedHistory) {
-      this.messageHistory = storedHistory;
-    }
-  }
-
-  async reMessage(phoneNumber: string) {
-    // Autofill the phone number when re-messaging
-    this.phoneNumber = phoneNumber;
-  }
-  
 }

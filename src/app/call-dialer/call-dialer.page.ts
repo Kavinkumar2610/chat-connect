@@ -13,12 +13,11 @@ export class CallDialerPage {
   phoneNumbers: string[] = [];
   callHistory: string[] = [];
   uploadedFileName: string | null = null;
-  checkCallAccepted: any;
-  callAccepted: boolean = false; // Declare callAccepted property and initialize it to false
+  calling = false;
 
   constructor(
     private http: HttpClient,
-    private alertController: AlertController // Inject AlertController
+    private alertController: AlertController
   ) {
     const storedFileName = localStorage.getItem('uploadedFileName');
     if (storedFileName) {
@@ -35,10 +34,10 @@ export class CallDialerPage {
     }
   }
 
-  onFileChange(event: any) {
-    const fileList: FileList = event.target.files;
-    if (fileList.length > 0) {
-      const file: File = fileList[0];
+  onFileChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (file) {
       this.uploadedFileName = file.name;
       localStorage.setItem('uploadedFileName', this.uploadedFileName);
       const reader = new FileReader();
@@ -49,34 +48,33 @@ export class CallDialerPage {
       };
       reader.readAsText(file);
     }
+    // Allow picking the same file again after removing it
+    input.value = '';
   }
 
   extractPhoneNumbers(csvData: string) {
+    this.phoneNumbers = [];
     const lines: string[] = csvData.split('\n');
-    
-    // Find the index of the column named "phone-number" in the first row
+
+    // Find the index of the column named "phone" in the first row
     const headerRowColumns: string[] = lines[0].split(',');
-    const phoneNumberColumnIndex = headerRowColumns.findIndex(column => column.trim().toLowerCase() === 'phone' || column.trim() === 'phone');
-  
+    const phoneNumberColumnIndex = headerRowColumns.findIndex(column => column.trim().toLowerCase() === 'phone');
+
     if (phoneNumberColumnIndex !== -1) {
       // Iterate over the rows starting from the second row
       for (let i = 1; i < lines.length; i++) {
-        const line = lines[i];
-        const columns: string[] = line.split(',');
-        if (columns.length > phoneNumberColumnIndex) { // Check if column index is within bounds
-          const phoneNumber: string = columns[phoneNumberColumnIndex].trim(); // Use the found column index
+        const columns: string[] = lines[i].split(',');
+        if (columns.length > phoneNumberColumnIndex) {
+          const phoneNumber: string = columns[phoneNumberColumnIndex].trim();
           if (phoneNumber !== '') {
             this.phoneNumbers.push(phoneNumber);
           }
         }
       }
-      console.log('Extracted phone numbers:', this.phoneNumbers);
     } else {
-      // Display alert if phone-number column is not found
-      this.showAlert('Error', 'Phone number column not found in CSV header row.');
+      this.showAlert('No phone column found', 'The first row of the CSV needs a column named "phone". Download the template to see the format.');
     }
   }
-  
 
   callNumber(number: string) {
     window.location.href = `tel:${number}`;
@@ -97,31 +95,44 @@ export class CallDialerPage {
       });
   }
 
+  async confirmClear() {
+    const alert = await this.alertController.create({
+      header: 'Remove this file?',
+      message: 'This clears the imported numbers and your call history.',
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        { text: 'Remove', role: 'destructive', handler: () => this.clearPhoneNumbers() },
+      ],
+    });
+    await alert.present();
+  }
+
   clearPhoneNumbers() {
+    this.stopCall();
     this.phoneNumbers = [];
     this.callHistory = [];
     this.uploadedFileName = null;
     localStorage.removeItem('uploadedFileName');
     localStorage.removeItem('uploadedFile');
     localStorage.removeItem('callHistory');
-    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-    fileInput.value = '';
   }
 
   startCall() {
+    this.calling = true;
     this.callNextNumber(0);
   }
 
   stopCall() {
-    clearInterval(this.checkCallAccepted); // Clear the interval immediately
-    console.log('Calls stopped.');
-    this.callAccepted = true; // Set callAccepted flag to true
+    this.calling = false;
   }
-  
+
   callNextNumber(index: number) {
+    // Pending timers from an earlier call land here after Stop; drop them
+    if (!this.calling) {
+      return;
+    }
     if (index < this.phoneNumbers.length) {
       const number = this.phoneNumbers[index];
-      console.log('Calling:', number);
       const callWindow = window.open(`tel:${number}`, '_blank');
 
       const callAcceptedTimeout = 30000;
@@ -132,7 +143,6 @@ export class CallDialerPage {
         if (!callWindow || callWindow.closed) {
           clearInterval(checkCallAccepted);
           if (!callAccepted) {
-            console.log('Call not accepted. Proceeding to the next number.');
             this.callNextNumber(index + 1);
           }
         }
@@ -140,7 +150,6 @@ export class CallDialerPage {
 
       setTimeout(() => {
         if (!callAccepted) {
-          console.log('30 seconds passed. Proceeding to the next number.');
           clearInterval(checkCallAccepted);
           if (callWindow && !callWindow.closed) {
             callWindow.close();
@@ -152,11 +161,10 @@ export class CallDialerPage {
       window.addEventListener('beforeunload', () => {
         callAccepted = true;
         clearInterval(checkCallAccepted);
-        console.log('Call accepted. Waiting for the call to end before calling the next person.');
         this.addToCallHistory(number);
       });
     } else {
-      console.log('All numbers called.');
+      this.calling = false;
     }
   }
 
@@ -167,14 +175,10 @@ export class CallDialerPage {
 
   async showAlert(header: string, message: string) {
     const alert = await this.alertController.create({
-      header: header,
-      message: message,
-      buttons: [{
-        text: 'OK',
-        cssClass: 'ok-button',
-      }],
+      header,
+      message,
+      buttons: ['OK'],
     });
     await alert.present();
   }
-  
 }

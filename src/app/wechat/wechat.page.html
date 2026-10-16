@@ -1,13 +1,17 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
     <ion-title>WeChat</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-item>
-    <ion-input label="WeChat ID" labelPlacement="stacked" type="text" [(ngModel)]="wechatId"></ion-input>
-  </ion-item>
-
-  <ion-button expand="block" (click)="startChat()">Start Chat</ion-button>
+  <main class="page">
+    <div class="card">
+      <ion-input label="WeChat ID" labelPlacement="stacked" fill="outline" type="text" [(ngModel)]="wechatId"></ion-input>
+      <ion-button expand="block" size="large" [disabled]="!wechatId" (click)="startChat()">Open WeChat</ion-button>
+    </div>
+  </main>
 </ion-content>

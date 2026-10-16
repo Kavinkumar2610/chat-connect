@@ -1,112 +1,131 @@
-/* Header styles */
-.back-button {
-  --color: #128c7e; /* Set back button color */
+/* Country trigger: a real button styled to match Ionic's md outline fields */
+.picker-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  padding: 0 16px;
+  border: 1px solid var(--ion-color-step-300, var(--ion-background-color-step-300, #b3b3b3));
+  border-radius: 4px;
+  background: transparent;
+  color: var(--ion-text-color);
+  font: inherit;
+  font-size: 16px;
+  text-align: start;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--ion-text-color);
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: var(--ion-color-primary);
+    box-shadow: inset 0 0 0 1px var(--ion-color-primary);
+  }
+
+  ion-icon {
+    margin-inline-start: auto;
+    color: var(--ion-color-medium);
+    font-size: 14px;
+  }
 }
 
-.header-title {
-  color: #128c7e; /* Set header title color */
-  font-size: 24px; /* Set header title font size */
-  font-weight: bold; /* Make header title bold */
+.picker-label {
+  position: absolute;
+  top: 0;
+  left: 12px;
+  transform: translateY(-50%);
+  padding: 0 4px;
+  background: var(--ion-item-background, var(--ion-background-color, #fff));
+  font-size: 12px;
+  line-height: 1;
 }
 
-
-/* Content styles */
-.content {
-  --ion-background-color: #f9f9f9; /* Set background color */
-  padding: 20px; /* Add padding to content */
+.picker-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.form-container {
-  padding: 20px;
-  background-color: #ffffff; /* Set form container background color */
-  border-radius: 15px; /* Add rounded corners to form container */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow to form container */
-  width: 100%; /* Set width to 100% of screen */
-  max-width: none; /* Remove max width */
-  margin: 0 auto; /* Center container horizontally */
-  // height: 100%;
+.picker-code,
+.dial {
+  color: var(--ion-color-medium);
+  font-variant-numeric: tabular-nums;
 }
 
-
-.form-item {
-  margin-bottom: 20px;
+.flag {
+  font-size: 22px;
+  line-height: 1;
 }
 
-.form-label {
-  color: #000000; /* Set form label color */
-  font-size: 20px; /* Set font size for field names */
-  margin-bottom: 5px; /* Add margin below field names */
+/* Country modal */
+.search-toolbar {
+  --padding-start: 8px;
+  --padding-end: 8px;
+
+  ion-searchbar {
+    --background: var(--ion-item-background, var(--ion-background-color, #fff));
+    --border-radius: 12px;
+    --box-shadow: none;
+    border: 1px solid var(--app-border);
+    border-radius: 12px;
+    padding: 0;
+    margin: 0 0 8px;
+  }
 }
 
-ion-card-header {
-  color: #000000; /* Set form label color */
-  font-size: 16px; /* Set font size for field names */
-  margin-bottom: 5px; /* Add margin below field names */
+.picker-body .section-header:first-child {
+  margin-top: 4px;
 }
 
-form-label-cm {
-  color: #504f4f; /* Set form label color */
-  font-size: 16px; /* Set font size for field names */
+ion-item.selected {
+  --background: rgba(var(--ion-color-primary-rgb), 0.1);
+
+  ion-label {
+    font-weight: 600;
+  }
 }
 
-.country-select {
-  min-width: 150px; /* Set minimum width for country select */
+ion-item .flag {
+  margin-inline-end: 16px;
 }
 
-.phone-input {
-  border: 1px solid #ccc; /* Add border to input fields */
-  border-radius: 8px; /* Round the corners of input fields */
-  padding: 10px; /* Add padding to input fields */
-  padding-left: 20px; /* Add left padding for phone number input */
-}
-
-.message-textarea {
-  min-height: 150px; /* Set minimum height for textarea */
-  resize: vertical; /* Allow vertical resizing */
-  border: 1px solid #ccc; /* Add border to input fields */
-  border-radius: 8px; /* Round the corners of input fields */
-  padding: 10px; /* Add padding to input fields */
-  padding-left: 20px; /* Add left padding for phone number input */
-}
-
-.start-button {
-  margin-top: 20px; /* Add some space between input fields and button */
-  --background: #128c7e; /* Set button background color */
-  --border-radius: 8px; /* Round the button corners */
-  --box-shadow: none; /* Remove button shadow */
-  font-weight: bold; /* Make button text bold */
-}
-
-/* Message history container */
-.message-history-container {
-  background-color: #ffffff; /* Set background color for message history */
-  border-radius: 15px; /* Add rounded corners */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow */
-  padding: 20px; /* Add padding */
-  margin-top: 20px; /* Add margin from form container */
-}
-
-/* Message history list */
-.message-history-list {
-  margin-top: 10px; /* Add margin between list items */
-}
-
-/* Button to clear history */
-.clear-history-button {
-  margin-top: 20px; /* Add margin from message history */
-  --background: #ff4d4f; /* Set button background color */
-  --border-radius: 8px; /* Round the button corners */
-  --box-shadow: none; /* Remove button shadow */
-  font-weight: bold; /* Make button text bold */
-}
-
-.version-label {
+.picker-empty {
+  padding: 48px 24px;
+  color: var(--ion-color-medium);
   text-align: center;
-  color: #999; /* Set color of the version label */
-  margin-top: 20px; /* Adjust the margin as needed */
+
+  ion-icon {
+    font-size: 40px;
+  }
+
+  p {
+    margin: 4px 0;
+  }
 }
 
-ion-avatar{
-    width: 35px; /* Set the width of the logo */
-    height: 35px; /* Set the height of the logo */
+.picker-empty-title {
+  color: var(--ion-text-color);
+  font-size: 17px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.dial-code {
+  margin-inline-end: 6px;
+  color: var(--ion-color-medium);
+}
+
+ion-button[type="submit"] {
+  margin: 8px 0 0;
+}
+
+ion-item p {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

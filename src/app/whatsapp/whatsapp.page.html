@@ -1,69 +1,136 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home" class="back-button"></ion-back-button>
+      <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-avatar slot="start">
-      <img src="assets/whatsapp.png">
-    </ion-avatar>
-    <ion-title class="header-title">
-      WhatsApp
-    </ion-title>
+    <ion-title>WhatsApp</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="content">
-  <div class="form-container">
-    <form #whatsappForm="ngForm" (ngSubmit)="startChat()">
-      <!-- ponytail: styled stacked ion-labels kept for the custom look; aria-label links each control. Switch to slot="label" if restyling. -->
-      <ion-item class="form-item">
-        <ion-label position="stacked" class="form-label">Country Code</ion-label>
-        <ion-select aria-label="Country Code" [(ngModel)]="selectedCountryCode" interface="popover" class="country-select" name="selectedCountryCode" required>
-          @for (countryCode of countryCodes; track countryCode) {
-            <ion-select-option [value]="countryCode">
-              {{ countryCode.name }} (+{{ countryCode.code }})
-            </ion-select-option>
-          }
-        </ion-select>
-      </ion-item>
+<ion-content>
+  <main class="page">
+    <p class="page-intro">Message any number on WhatsApp without saving it to your contacts.</p>
 
-      <ion-item class="form-item">
-        <ion-label position="stacked" class="form-label">Phone Number</ion-label>
-        <ion-input aria-label="Phone Number" type="tel" placeholder="Enter phone number" [(ngModel)]="phoneNumber" class="phone-input" name="phoneNumber" pattern="[0-9]*" required (keypress)="validatePhoneNumber($event)"></ion-input>
-      </ion-item>
+    <form class="card" #chatForm="ngForm" (ngSubmit)="startChat()">
+      <button type="button" id="country-trigger" class="picker-field" aria-haspopup="dialog">
+        <span class="picker-label">Country</span>
+        <span class="flag" aria-hidden="true">{{ selectedCountryCode.flag }}</span>
+        <span class="picker-value">{{ selectedCountryCode.name }}</span>
+        <span class="picker-code">{{ selectedCountryCode.code }}</span>
+        <ion-icon name="caret-down-sharp" aria-hidden="true"></ion-icon>
+      </button>
 
-      <ion-item class="form-item">
-        <ion-label position="stacked" class="form-label">Custom Message</ion-label>
-        <ion-label position="stacked" class="form-label-cm">(Max 200 characters)</ion-label>
-        <ion-textarea aria-label="Custom Message" placeholder="Enter custom message" [(ngModel)]="customMessage" class="message-textarea" name="customMessage" maxlength="200"></ion-textarea>
-      </ion-item>
+      <ion-input
+        label="Phone number"
+        labelPlacement="stacked"
+        fill="outline"
+        type="tel"
+        autocomplete="tel"
+        placeholder="12-345 6789"
+        name="phoneNumber"
+        [(ngModel)]="phoneNumber"
+        required
+        pattern="\+?[0-9\s\-\(\)]{6,20}"
+        helperText="Local number, or paste a full number starting with +"
+        errorText="Enter a valid phone number, 6 to 15 digits">
+        @if (!phoneNumber.startsWith('+')) {
+          <span slot="start" class="dial-code">{{ selectedCountryCode.code }}</span>
+        }
+      </ion-input>
 
-      <ion-button expand="full" color="primary" type="submit" [disabled]="!phoneNumber" class="start-button">Start Chat</ion-button>
+      <ion-textarea
+        label="Message (optional)"
+        labelPlacement="stacked"
+        fill="outline"
+        placeholder="Pre-fill the first message"
+        name="customMessage"
+        [(ngModel)]="customMessage"
+        [counter]="true"
+        maxlength="200"
+        [autoGrow]="true"
+        rows="3">
+      </ion-textarea>
+
+      <ion-button type="submit" expand="block" size="large" [disabled]="chatForm.invalid">
+        <ion-icon slot="start" name="logo-whatsapp" aria-hidden="true"></ion-icon>
+        Open WhatsApp
+      </ion-button>
     </form>
-  </div>
-  <div class="message-history-container">
-    <ion-card>
-      <ion-card-header>
-        Message History
-      </ion-card-header>
-      <ion-card-content>
-        <ion-list>
-          @for (historyItem of messageHistory; track historyItem) {
-            <ion-item>
-              <ion-label>{{ historyItem.phoneNumber }}</ion-label>
-              @if (historyItem.customMessage) {
-                <ion-button slot="end" (click)="showMessage(historyItem.customMessage)">
-                  <ion-icon name="chatbox"></ion-icon>
-                </ion-button>
-              }
-              <ion-button slot="end" (click)="reMessage(historyItem.phoneNumber)">
-                <ion-icon name="repeat"></ion-icon>
-              </ion-button>
-            </ion-item>
-          }
-        </ion-list>
-      </ion-card-content>
-      <ion-button expand="block" color="danger" (click)="clearHistory()">Clear</ion-button>
-    </ion-card>
-  </div>
+
+    @if (messageHistory.length) {
+      <div class="section-header">
+        <h2>Recent</h2>
+        <ion-button fill="clear" color="danger" (click)="confirmClear()">Clear</ion-button>
+      </div>
+      <ion-list [inset]="true" lines="inset">
+        @for (item of messageHistory; track item) {
+          <ion-item button [detail]="false" (click)="reuse(item)">
+            <ion-icon slot="start" name="person-circle-outline" color="medium" aria-hidden="true"></ion-icon>
+            <ion-label>
+              <h3>{{ item.to ? '+' + item.to : item.phoneNumber }}</h3>
+              <p>{{ item.customMessage || 'No message' }}</p>
+            </ion-label>
+            <ion-icon slot="end" name="arrow-undo-outline" color="medium" aria-hidden="true"></ion-icon>
+          </ion-item>
+        }
+      </ion-list>
+    }
+  </main>
 </ion-content>
+
+<ion-modal class="theme-whatsapp" trigger="country-trigger" (didPresent)="countrySearch?.setFocus()" (didDismiss)="countryQuery = ''">
+  <ng-template>
+    <ion-header class="ion-no-border">
+      <ion-toolbar>
+        <ion-title>Select country</ion-title>
+        <ion-buttons slot="end">
+          <ion-button aria-label="Close" (click)="countryModal.dismiss()">
+            <ion-icon slot="icon-only" name="close" aria-hidden="true"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+      <ion-toolbar class="search-toolbar">
+        <ion-searchbar
+          placeholder="Search country or dialing code"
+          enterkeyhint="search"
+          showCancelButton="never"
+          [value]="countryQuery"
+          (ionInput)="countryQuery = $event.detail.value ?? ''">
+        </ion-searchbar>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <div class="page picker-body">
+        @for (section of countrySections; track section.title) {
+          <div class="section-header">
+            <h2>{{ section.title }}</h2>
+          </div>
+          <ion-list [inset]="true" lines="inset">
+            @for (country of section.items; track country.region) {
+              <ion-item button [detail]="false" [class.selected]="country === selectedCountryCode" (click)="selectCountry(country)">
+                <span slot="start" class="flag" aria-hidden="true">{{ country.flag }}</span>
+                <ion-label>
+                  {{ country.name }}
+                  @if (country === selectedCountryCode) {
+                    <span class="sr-only">, selected</span>
+                  }
+                </ion-label>
+                <ion-note slot="end" class="dial">{{ country.code }}</ion-note>
+                @if (country === selectedCountryCode) {
+                  <ion-icon slot="end" name="checkmark" color="primary" aria-hidden="true"></ion-icon>
+                }
+              </ion-item>
+            }
+          </ion-list>
+        } @empty {
+          <div class="picker-empty" role="status">
+            <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+            <p class="picker-empty-title">No countries match “{{ countryQuery }}”</p>
+            <p>Try a country name or a dialing code like +60.</p>
+          </div>
+        }
+      </div>
+    </ion-content>
+  </ng-template>
+</ion-modal>
