@@ -3,8 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage-angular'; // Import Storage service
 import { ActionSheetController } from '@ionic/angular';
-import { Plugins } from '@capacitor/core';
-const { Browser } = Plugins;
+import { Browser } from '@capacitor/browser';
 
 interface CountryCode {
   name: string;
@@ -79,11 +78,8 @@ export class WhatsappPage implements OnInit {
     }
     console.log('Opening WhatsApp link:', whatsappLink);
 
-    if (Browser) {
-      await Browser['open']({ url: whatsappLink });
-    } else {
-      window.open(whatsappLink, '_blank');
-    }
+    // Browser.open falls back to window.open on web
+    await Browser.open({ url: whatsappLink });
 
     // Save message to history
     this.messageHistory.unshift({ phoneNumber: this.phoneNumber, customMessage: this.customMessage });
