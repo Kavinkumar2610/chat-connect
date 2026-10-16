@@ -15,9 +15,10 @@
 <ion-content class="content">
   <div class="form-container">
     <form #whatsappForm="ngForm" (ngSubmit)="startChat()">
+      <!-- ponytail: styled stacked ion-labels kept for the custom look; aria-label links each control. Switch to slot="label" if restyling. -->
       <ion-item class="form-item">
         <ion-label position="stacked" class="form-label">Country Code</ion-label>
-        <ion-select [(ngModel)]="selectedCountryCode" interface="popover" class="country-select" name="selectedCountryCode" required>
+        <ion-select aria-label="Country Code" [(ngModel)]="selectedCountryCode" interface="popover" class="country-select" name="selectedCountryCode" required>
           <ion-select-option *ngFor="let countryCode of countryCodes" [value]="countryCode">
             {{ countryCode.name }} (+{{ countryCode.code }})
           </ion-select-option>
@@ -26,13 +27,13 @@
 
       <ion-item class="form-item">
         <ion-label position="stacked" class="form-label">Phone Number</ion-label>
-        <ion-input type="tel" placeholder="Enter phone number" [(ngModel)]="phoneNumber" class="phone-input" name="phoneNumber" pattern="[0-9]*" required (keypress)="validatePhoneNumber($event)"></ion-input>
+        <ion-input aria-label="Phone Number" type="tel" placeholder="Enter phone number" [(ngModel)]="phoneNumber" class="phone-input" name="phoneNumber" pattern="[0-9]*" required (keypress)="validatePhoneNumber($event)"></ion-input>
       </ion-item>           
 
       <ion-item class="form-item">
         <ion-label position="stacked" class="form-label">Custom Message</ion-label>
         <ion-label position="stacked" class="form-label-cm">(Max 200 characters)</ion-label>
-        <ion-textarea placeholder="Enter custom message" [(ngModel)]="customMessage" class="message-textarea" name="customMessage" maxlength="200"></ion-textarea>
+        <ion-textarea aria-label="Custom Message" placeholder="Enter custom message" [(ngModel)]="customMessage" class="message-textarea" name="customMessage" maxlength="200"></ion-textarea>
       </ion-item>
 
       <ion-button expand="full" color="primary" type="submit" [disabled]="!phoneNumber" class="start-button">Start Chat</ion-button>
