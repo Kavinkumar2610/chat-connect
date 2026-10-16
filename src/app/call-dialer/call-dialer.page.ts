@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular/lazy';
 
 @Component({
   selector: 'app-call-dialer',

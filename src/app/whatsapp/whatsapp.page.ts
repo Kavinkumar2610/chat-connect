@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage-angular'; // Import Storage service
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController } from '@ionic/angular/lazy';
 import { Browser } from '@capacitor/browser';
 
 interface CountryCode {

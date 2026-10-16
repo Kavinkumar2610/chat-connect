@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IonicModule, Platform } from '@ionic/angular';
+import { IonicModule, Platform } from '@ionic/angular/lazy';
 import { DataService, Message } from '../services/data.service';
 
 @Component({
