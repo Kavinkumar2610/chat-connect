@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router'; // Import the Router module
-import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free/ngx'; // Make sure to use '/ngx' at the end
 
 
 @Component({
@@ -12,18 +11,9 @@ export class HomePage {
   greeting: string = ''; // Add the greeting property
   
 
-  constructor(
-    private router: Router,
-    private admobFree: AdMobFree
-
-  ) { // Inject the Router module
+  constructor(private router: Router) {
     this.setGreeting();
   }
-
-  ngOnInit() {
-    this.showBannerAd(); // Call showBannerAd() method here
-  }
-
 
   setGreeting() {
     const hour = new Date().getHours();
@@ -54,25 +44,4 @@ export class HomePage {
         console.error('Unsupported chat platform');
     }
   }
-  showBannerAd() {
-    const bannerConfig: AdMobFreeBannerConfig = {
-      id: 'ca-app-pub-0000000000000000/0000000000',
-      autoShow: true
-    };
-    this.admobFree.banner.config(bannerConfig);
-    this.admobFree.banner.prepare().then(() => {
-      // Banner Ad is ready
-    }).catch((error: any) => console.error(error));
-  }
-
-  initializeAdMob() {
-    this.admobFree.interstitial.config({
-      id: 'ca-app-pub-0000000000000000~0000000000',
-      autoShow: true
-    });
-    this.admobFree.interstitial.prepare().then(() => {
-      // interstitial ad is ready
-    }).catch(err => console.error('AdMob interstitial error:', err));
-  }
-  
 }

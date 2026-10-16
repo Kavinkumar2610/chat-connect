@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { WhatsappPageRoutingModule } from './whatsapp-routing.module';
 
 import { WhatsappPage } from './whatsapp.page';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
@@ -20,7 +19,6 @@ import { IonicStorageModule } from '@ionic/storage-angular';
     HttpClientModule,
     IonicStorageModule.forRoot(),
   ],
-  declarations: [WhatsappPage],
-  providers: [Geolocation]
+  declarations: [WhatsappPage]
 })
 export class WhatsappPageModule {}
