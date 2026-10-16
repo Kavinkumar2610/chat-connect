@@ -1,8 +1,8 @@
 {
   "name": "chat-connect",
   "version": "3.0.0",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "author": "Kavinkumar Supramanium",
+  "homepage": "https://github.com/Kavinkumar2610/chat-connect",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -56,5 +56,10 @@
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.71.2"
   },
-  "description": "An Ionic project"
+  "description": "Android app to start a WhatsApp chat with any number without saving it, and to call through a list of numbers from a CSV file.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kavinkumar2610/chat-connect.git"
+  }
 }

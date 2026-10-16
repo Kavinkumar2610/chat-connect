@@ -109,3 +109,7 @@ Update the version in three places:
 - `src/app/home/home.page.ts`: set `version`, which Home displays
 
 Then commit, tag with `git tag -a vX.Y.Z -m "ChatConnect X.Y.Z"`, and push the tag.
+
+## License
+
+[MIT](LICENSE). The WhatsApp, Telegram and WeChat logos in `src/assets/` are trademarks of their owners and are used only to identify each service.
