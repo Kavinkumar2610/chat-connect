@@ -19,16 +19,18 @@
       <ion-item class="form-item">
         <ion-label position="stacked" class="form-label">Country Code</ion-label>
         <ion-select aria-label="Country Code" [(ngModel)]="selectedCountryCode" interface="popover" class="country-select" name="selectedCountryCode" required>
-          <ion-select-option *ngFor="let countryCode of countryCodes" [value]="countryCode">
-            {{ countryCode.name }} (+{{ countryCode.code }})
-          </ion-select-option>
+          @for (countryCode of countryCodes; track countryCode) {
+            <ion-select-option [value]="countryCode">
+              {{ countryCode.name }} (+{{ countryCode.code }})
+            </ion-select-option>
+          }
         </ion-select>
       </ion-item>
 
       <ion-item class="form-item">
         <ion-label position="stacked" class="form-label">Phone Number</ion-label>
         <ion-input aria-label="Phone Number" type="tel" placeholder="Enter phone number" [(ngModel)]="phoneNumber" class="phone-input" name="phoneNumber" pattern="[0-9]*" required (keypress)="validatePhoneNumber($event)"></ion-input>
-      </ion-item>           
+      </ion-item>
 
       <ion-item class="form-item">
         <ion-label position="stacked" class="form-label">Custom Message</ion-label>
@@ -46,18 +48,22 @@
       </ion-card-header>
       <ion-card-content>
         <ion-list>
-          <ion-item *ngFor="let historyItem of messageHistory">
-            <ion-label>{{ historyItem.phoneNumber }}</ion-label>
-            <ion-button *ngIf="historyItem.customMessage" slot="end" (click)="showMessage(historyItem.customMessage)">
-              <ion-icon name="chatbox"></ion-icon>
-            </ion-button>
-            <ion-button slot="end" (click)="reMessage(historyItem.phoneNumber)">
-              <ion-icon name="repeat"></ion-icon>
-            </ion-button>
-          </ion-item>
+          @for (historyItem of messageHistory; track historyItem) {
+            <ion-item>
+              <ion-label>{{ historyItem.phoneNumber }}</ion-label>
+              @if (historyItem.customMessage) {
+                <ion-button slot="end" (click)="showMessage(historyItem.customMessage)">
+                  <ion-icon name="chatbox"></ion-icon>
+                </ion-button>
+              }
+              <ion-button slot="end" (click)="reMessage(historyItem.phoneNumber)">
+                <ion-icon name="repeat"></ion-icon>
+              </ion-button>
+            </ion-item>
+          }
         </ion-list>
       </ion-card-content>
       <ion-button expand="block" color="danger" (click)="clearHistory()">Clear</ion-button>
     </ion-card>
-  </div>  
+  </div>
 </ion-content>
