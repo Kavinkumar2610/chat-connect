@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage-angular'; // Import Storage service
@@ -15,6 +15,7 @@ interface CountryCode {
   selector: 'app-whatsapp',
   templateUrl: './whatsapp.page.html',
   styleUrls: ['./whatsapp.page.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class WhatsappPage implements OnInit {

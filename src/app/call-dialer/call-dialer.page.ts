@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-call-dialer',
   templateUrl: './call-dialer.page.html',
   styleUrls: ['./call-dialer.page.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class CallDialerPage {

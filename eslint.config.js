@@ -11,6 +11,8 @@ module.exports = defineConfig([
       // App intentionally stays on NgModules + constructor injection
       '@angular-eslint/prefer-standalone': 'off',
       '@angular-eslint/prefer-inject': 'off',
+      // Pages mutate state in place; v22 migration pinned them to Eager on purpose
+      '@angular-eslint/prefer-on-push-component-change-detection': 'off',
       '@angular-eslint/component-class-suffix': [
         'error',
         {

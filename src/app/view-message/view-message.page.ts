@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonicModule, Platform } from '@ionic/angular';
 import { DataService, Message } from '../services/data.service';
@@ -7,6 +7,7 @@ import { DataService, Message } from '../services/data.service';
   selector: 'app-view-message',
   templateUrl: './view-message.page.html',
   styleUrls: ['./view-message.page.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class ViewMessagePage implements OnInit {

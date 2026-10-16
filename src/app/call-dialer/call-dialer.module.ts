@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { CallDialerPageRoutingModule } from './call-dialer-routing.module';
 
 import { CallDialerPage } from './call-dialer.page';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -17,6 +17,6 @@ import { provideHttpClient } from '@angular/common/http';
     CallDialerPageRoutingModule
   ],
   declarations: [CallDialerPage],
-  providers: [provideHttpClient()]
+  providers: [provideHttpClient(withXhr())]
 })
 export class CallDialerPageModule {}
