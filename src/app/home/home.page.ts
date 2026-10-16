@@ -3,10 +3,10 @@ import { Router } from '@angular/router'; // Import the Router module
 
 
 @Component({
-    selector: 'app-home',
-    templateUrl: 'home.page.html',
-    styleUrls: ['home.page.scss'],
-    standalone: false
+  selector: 'app-home',
+  templateUrl: 'home.page.html',
+  styleUrls: ['home.page.scss'],
+  standalone: false
 })
 export class HomePage {
   greeting: string = ''; // Add the greeting property

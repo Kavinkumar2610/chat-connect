@@ -12,10 +12,10 @@ interface CountryCode {
 }
 
 @Component({
-    selector: 'app-whatsapp',
-    templateUrl: './whatsapp.page.html',
-    styleUrls: ['./whatsapp.page.scss'],
-    standalone: false
+  selector: 'app-whatsapp',
+  templateUrl: './whatsapp.page.html',
+  styleUrls: ['./whatsapp.page.scss'],
+  standalone: false
 })
 export class WhatsappPage implements OnInit {
   countryCodes: CountryCode[] = [];

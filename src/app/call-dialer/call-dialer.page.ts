@@ -3,10 +3,10 @@ import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 
 @Component({
-    selector: 'app-call-dialer',
-    templateUrl: './call-dialer.page.html',
-    styleUrls: ['./call-dialer.page.scss'],
-    standalone: false
+  selector: 'app-call-dialer',
+  templateUrl: './call-dialer.page.html',
+  styleUrls: ['./call-dialer.page.scss'],
+  standalone: false
 })
 export class CallDialerPage {
   phoneNumbers: string[] = [];
