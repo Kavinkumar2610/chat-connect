@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-wechat',
-  templateUrl: './wechat.page.html',
-  styleUrls: ['./wechat.page.scss'],
+    selector: 'app-wechat',
+    templateUrl: './wechat.page.html',
+    styleUrls: ['./wechat.page.scss'],
+    standalone: false
 })
 export class WechatPage implements OnInit {
   wechatId: string = '';
