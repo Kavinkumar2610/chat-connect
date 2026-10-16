@@ -7,16 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { CallDialerPageRoutingModule } from './call-dialer-routing.module';
 
 import { CallDialerPage } from './call-dialer.page';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    CallDialerPageRoutingModule,
-    HttpClientModule 
+    CallDialerPageRoutingModule
   ],
-  declarations: [CallDialerPage]
+  declarations: [CallDialerPage],
+  providers: [provideHttpClient()]
 })
 export class CallDialerPageModule {}
